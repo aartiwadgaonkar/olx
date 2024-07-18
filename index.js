@@ -8,7 +8,7 @@ const app=express()
 app.use(express.json())
 app.use(express.static("dist"))
 app.use(cors({
-    origin:process.env.NODE_ENV==="development"?"http://localhoat:5173":"live-server",
+    origin:process.env.NODE_ENV==="development"?"http://localhoat:5173":process.env.LIVE_SERVER,
     credentials:true
 }))
 
