@@ -11,7 +11,7 @@ app.use(cors({
     origin:process.env.NODE_ENV==="development"?"http://localhoat:5173":process.env.LIVE_SERVER,
     credentials:true
 }))
-
+app.use("/api/auth",require("./routes/auth.routes"))
 app.use("*",(req,res)=>{
     res.status(404).json({message:"Resource not found"})
 })
