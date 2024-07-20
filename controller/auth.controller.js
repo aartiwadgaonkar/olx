@@ -103,7 +103,7 @@ exports.loginAdmin = asyncHandler(async (req, res) => {
     console.log(result);
     return res.status(401).json({
       message:
-        process.env.NODE_ENV === "devolopment"
+        process.env.NODE_ENV === "development"
           ? "Invalid Email"
           : "Invalid Credientials",
     });
@@ -112,7 +112,7 @@ exports.loginAdmin = asyncHandler(async (req, res) => {
   if (!isVerify) {
     return res.status(401).json({
       message:
-        process.env.NODE_ENV === "devolopment"
+        process.env.NODE_ENV === "development"
           ? "Invalid Password"
           : "Invalid Credientials",
     });
@@ -132,7 +132,17 @@ exports.loginAdmin = asyncHandler(async (req, res) => {
 });
 
 exports.verifyOtp = asyncHandler(async (req, res) => {
+   const {email,otp}=req.body
+   const {isError,error}=checkEmpty({email,otp})
+   if (isError) {
+      return res.status(401).json({message:"all feilds required",error})
+   }
+   if (!validator.isEmail(email)) {
+      return res.status(401).json({message:"Invalid email"})
+      
+   }
   const result = await Admin.findOne({ email });
+
   if (!result) {
     return res
       .status(401)
@@ -163,3 +173,8 @@ exports.verifyOtp = asyncHandler(async (req, res) => {
     },
   });
 });
+
+exports.logoutAdmin = asyncHandler(async (req, res) => {
+  res.clearCookie("admin")
+  res.json({message:"Admin Logout SUccess"})
+})
